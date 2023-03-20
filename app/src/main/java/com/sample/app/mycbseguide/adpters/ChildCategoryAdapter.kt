@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sample.app.mycbseguide.databinding.CategoryItemBinding
-import com.sample.app.mycbseguide.models.CategoryModel
+import com.sample.app.mycbseguide.models.CategoryChildren
 import com.sample.app.mycbseguide.utils.load
 
-class CategoryAdapter(private val onClick:(category:CategoryModel)->Unit): RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
-    private val categories = mutableListOf<CategoryModel>()
+class ChildCategoryAdapter : RecyclerView.Adapter<ChildCategoryAdapter.ViewHolder>() {
+    private val categories = mutableListOf<CategoryChildren>()
 
-    inner class ViewHolder(val binding:CategoryItemBinding):RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(val binding: CategoryItemBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = CategoryItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -24,10 +24,9 @@ class CategoryAdapter(private val onClick:(category:CategoryModel)->Unit): Recyc
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.imageView.load(categories[position].mobile_logo)
         holder.binding.textViewName.text = categories[position].name
-        holder.binding.root.setOnClickListener {  onClick.invoke(categories[position])}
     }
 
-    fun setCategoriesList(list:List<CategoryModel>){
+    fun setCategoriesList(list:List<CategoryChildren>){
         categories.clear()
         categories.addAll(list)
         notifyDataSetChanged()

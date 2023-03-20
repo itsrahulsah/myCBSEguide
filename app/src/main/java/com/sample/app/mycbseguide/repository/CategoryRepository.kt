@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.sample.app.mycbseguide.database.AppDatabase
+import com.sample.app.mycbseguide.models.CategoryChildren
 import com.sample.app.mycbseguide.models.CategoryModel
 import com.sample.app.mycbseguide.network.RetrofitClient
 import org.json.JSONObject
@@ -12,6 +13,10 @@ class CategoryRepository(private  val db:AppDatabase) {
     private val _categoriesList = MutableLiveData<List<CategoryModel>>()
     val categoriesList:LiveData<List<CategoryModel>>
     get() = _categoriesList
+
+    private val _childCategoriesList = MutableLiveData<List<CategoryChildren>>()
+    val childCategoriesList:LiveData<List<CategoryChildren>>
+        get() = _childCategoriesList
 
     private val _somethingWentWrong = MutableLiveData<Unit>()
     val somethingWentWrong:LiveData<Unit>
@@ -34,5 +39,9 @@ class CategoryRepository(private  val db:AppDatabase) {
         }else{
             _somethingWentWrong.postValue(Unit)
         }
+    }
+
+    suspend fun getChildCategories(parenId:Int){
+        _childCategoriesList.postValue(db.getCategoriesDao().getChildCategories(parenId).sortedBy { it.weight })
     }
 }
